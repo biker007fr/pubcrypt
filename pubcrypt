@@ -1,0 +1,108 @@
+#!/bin/bash
+
+# NOTES
+# do not forget to add pubcrypt in your $PATH
+# Ex: For /home/myuser/bin/pubcrypt
+# add the following line to your ~/.profile or ~/.bashrc
+# export PATH=$PATH:/home/myuser/bin/pubcrypt
+
+# CONSTANT
+DEF_PRIV_KEY="${HOME}/.ssh/id_rsa"
+
+# FUNCTIONS
+function check_req
+{
+  req=( openssl )
+  for binary in "${req[@]}"
+  do
+    if ! hash ${binary} 2>/dev/null
+    then
+      echo >&2 "${binary} not found. Check path or install binary"
+      exit 1
+    fi
+  done
+}
+
+function usage
+{
+  echo >&2 "Usage:
+------
+- To encrypt a string:
+\"myPassword\" | pubcrypt -e /path/to/key.pub
+- To encrypt a file:
+pubcrypt -e /path/to/key.pub < /path/to/cleartext/secret/file.txt
+
+- To decrypt a string:
+If your private key is ~/.ssh/id_rsa you do not need to specify it
+\"myEncryptedPassword\" | pubcrypt -d
+otherwise
+\"myEncryptedPassword\" | pubcrypt -d ~/.ssh/key_rsa
+- To decrypt a file:
+With ~/.ssh/id_rsa as a private key
+pubcrypt -d < /path/to/encrypted/secret/file.txt
+Otherwise
+pubcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
+Enjoy ;-)"
+}
+
+function decrypt
+{
+  if [ -z $1 ]
+  then
+    # set default private key if not provided
+    PRIV_KEY="${DEF_PRIV_KEY}"
+  else
+    PRIV_KEY="$1"
+  fi
+  # Decode base64'd encoded secret 
+  base64 --decode --input - | openssl rsautl -decrypt -inkey ${PRIV_KEY} 
+}
+
+function encrypt
+{
+  if [ -z $1 ]
+  then
+    usage 
+    exit 1
+  fi
+
+  PUB_KEY="$1"
+
+  # rsa to pem
+  ssh-keygen -f ${PUB_KEY} -e -m PKCS8 > ${PUB_KEY}.pem
+  if [ $? -ne 0 ]
+  then
+    echo >&2 "Could not convert ${PUB_KEY} to pem"
+    exit 1
+  fi
+
+  # Encrypt secret/file with public key
+  openssl rsautl -encrypt -pubin -inkey ${PUB_KEY}.pem | base64
+  if [ $? -ne 0 ]
+  then
+    echo >&2 "Could not encrypt with ${PUB_KEY}.pem"
+    exit 1
+  fi  
+}
+
+### MAIN
+
+# check if required binaries are available
+check_req
+
+while getopts "e::d :h" opt
+do
+  case $opt in
+    e)
+      encrypt $OPTARG
+      ;;
+    d)
+      decrypt
+      ;;
+    h|*)
+      usage
+      exit 128
+      ;;
+  esac
+done
+

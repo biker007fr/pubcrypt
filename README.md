@@ -40,7 +40,7 @@ pubcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
 ```
 
 # Notes
-Do not forget to add pubcrypt in your $PATH
-Ex: For /home/myuser/bin/pubcrypt
-add the following line to your ~/.profile or ~/.bashrc
+Do not forget to add pubcrypt in your $PATH  
+Ex: For /home/myuser/bin/pubcrypt  
+add the following line to your ~/.profile or ~/.bashrc  
 export PATH=$PATH:/home/myuser/bin/pubcrypt

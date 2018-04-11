@@ -1,4 +1,4 @@
-This script will encrypt or decrypt a file or a string using a ssh key.  
+This script will encrypt or decrypt a file or a string using a SSH public and private key pair.  
 It is usually used to exchange sensitive information with a specific person that can provide you a public ssh key.
 The public key will be used to encrypt a file or a text. Send the encrypted version to this person so he can use his private ssh key to decrypt it
 
@@ -12,35 +12,35 @@ The public key will be used to encrypt a file or a text. Send the encrypted vers
 ## Encrypt
 ### To encrypt a string:
 ```
-"myPassword" | pubcrypt -e /path/to/key.pub
+echo "myPassword" | sshpkcrypt -e /path/to/key.pub
 ```
 ### To encrypt a file:
 ```
-pubcrypt -e /path/to/key.pub < /path/to/cleartext/secret/file.txt
+sshpkcrypt -e /path/to/key.pub < /path/to/cleartext/secret/file.txt
 ```
 
 ## Decrypt
 ### To decrypt a string:
 If your private key is ~/.ssh/id_rsa you do not need to specify it
 ```
-"myEncryptedPassword" | pubcrypt -d
+echo "myEncryptedPassword" | sshpkcrypt -d
 ```
 otherwise
 ```
-"myEncryptedPassword" | pubcrypt -d ~/.ssh/key_rsa
+echo "myEncryptedPassword" | sshpkcrypt -d ~/.ssh/key_rsa
 ```
 ### To decrypt a file:
 With ~/.ssh/id_rsa as a private key
 ```
-pubcrypt -d < /path/to/encrypted/secret/file.txt
+sshpkcrypt -d < /path/to/encrypted/secret/file.txt
 ```
 Otherwise
 ```
-pubcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
+sshpkcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
 ```
 
 # Notes
-Do not forget to add pubcrypt in your $PATH  
-Ex: For /home/myuser/bin/pubcrypt  
+Do not forget to add sshpkcrypt in your $PATH  
+Ex: For /home/myuser/bin/sshpkcrypt  
 add the following line to your ~/.profile or ~/.bashrc  
-export PATH=$PATH:/home/myuser/bin/pubcrypt
+export PATH=$PATH:/home/myuser/bin/sshpkcrypt

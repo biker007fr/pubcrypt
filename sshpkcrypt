@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # NOTES
-# do not forget to add pubcrypt in your $PATH
-# Ex: For /home/myuser/bin/pubcrypt
+# do not forget to add sshpkcrypt in your $PATH
+# Ex: For /home/myuser/bin/sshpkcrypt
 # add the following line to your ~/.profile or ~/.bashrc
-# export PATH=$PATH:/home/myuser/bin/pubcrypt
+# export PATH=$PATH:/home/myuser/bin/sshpkcrypt
 
 # CONSTANT
 DEF_PRIV_KEY="${HOME}/.ssh/id_rsa"
@@ -28,20 +28,20 @@ function usage
   echo >&2 "Usage:
 ------
 - To encrypt a string:
-\"myPassword\" | pubcrypt -e /path/to/key.pub
+echo \"myPassword\" | sshpkcrypt -e /path/to/key.pub
 - To encrypt a file:
-pubcrypt -e /path/to/key.pub < /path/to/cleartext/secret/file.txt
+sshpkcrypt -e /path/to/key.pub < /path/to/cleartext/secret/file.txt
 
 - To decrypt a string:
 If your private key is ~/.ssh/id_rsa you do not need to specify it
-\"myEncryptedPassword\" | pubcrypt -d
+echo \"myEncryptedPassword\" | sshpkcrypt -d
 otherwise
-\"myEncryptedPassword\" | pubcrypt -d ~/.ssh/key_rsa
+echo \"myEncryptedPassword\" | sshpkcrypt -d ~/.ssh/key_rsa
 - To decrypt a file:
 With ~/.ssh/id_rsa as a private key
-pubcrypt -d < /path/to/encrypted/secret/file.txt
+sshpkcrypt -d < /path/to/encrypted/secret/file.txt
 Otherwise
-pubcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
+sshpkcrypt -d ~/.ssh/key_rsa < /path/to/encrypted/secret/file.txt
 Enjoy ;-)"
 }
 

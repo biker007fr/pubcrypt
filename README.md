@@ -1,6 +1,6 @@
-This script will encrypt or decrypt file or string using ssh keys.
-It is usually used to exchange information with a specific person that can provide a public ssh key to you.
-The public key will be used to encrypt a file or text. Send the encrypted version to this person so he can use his private ssh key to decrypt it
+This script will encrypt or decrypt a file or a string using a ssh key.  
+It is usually used to exchange sensitive information with a specific person that can provide you a public ssh key.
+The public key will be used to encrypt a file or a text. Send the encrypted version to this person so he can use his private ssh key to decrypt it
 
 # Requirements
 - Openssl binary

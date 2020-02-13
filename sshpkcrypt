@@ -90,14 +90,14 @@ function encrypt
 # check if required binaries are available
 check_req
 
-while getopts "e::d :h" opt
+while getopts "e::d::h" opt
 do
   case $opt in
     e)
       encrypt $OPTARG
       ;;
     d)
-      decrypt
+      decrypt $OPTARG
       ;;
     h|*)
       usage
